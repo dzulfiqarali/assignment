@@ -1,15 +1,15 @@
 <!DOCTYPE html>
         <html>
             <head>
-                <title>REGISTER</title>
+                <title>UPDATE</title>
             </head>
             <body>
-                <form action="/register" method="post">
+                <form action="/update" method="post">
                     Nama: <input type="text" name="nama"><br>
                     Umur: <input type="text" name="umur"><br>
                     Alamat: <input type="text" name="alamat"><br>
                     Email: <input type="email" name="email"><br>
-                    Role: <input type="role" name="role"><br>
+                    ID: <input type="id" name="id"><br>
                     <input type="submit" value="Update">
                 </form>
             </body>

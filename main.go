@@ -96,7 +96,7 @@ func registrasi(w http.ResponseWriter, r *http.Request) {
 func update(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Method: ", r.Method)
 	if r.Method == "GET" {
-		t, _ := template.ParseFiles("./templates/register.gtpl")
+		t, _ := template.ParseFiles("./templates/update.gtpl")
 		t.Execute(w, nil)
 	} else {
 		r.ParseForm()
@@ -116,8 +116,8 @@ func update(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Harus sesuai dengan penulisan email", r.Form["email"])
 		}
 
-		if len(r.Form["role"][0]) < 3 {
-			fmt.Println("role harus lebih dari 3 karakter: ", r.Form["role"])
+		if m, _ := regexp.MatchString("^[0-9]+$", r.Form.Get("id")); !m {
+			fmt.Println("ID yang di input bukan bilangan positif: ", r.Form["id"])
 		}
 
 		nama := r.FormValue("nama")
@@ -126,6 +126,7 @@ func update(w http.ResponseWriter, r *http.Request) {
 		newUmur, _ := strconv.Atoi(umur)
 		email := r.FormValue("email")
 		role := r.FormValue("role")
+		id := r.FormValue("id")
 
 		newData := &models.Users{nama, newUmur, alamat, email, role}
 
@@ -136,10 +137,10 @@ func update(w http.ResponseWriter, r *http.Request) {
 		db := ConnectDB()
 
 		// update
-		stmt, err := db.Prepare("UPDATE users SET nama=?, umur=?, alamat=?, email=? where role=?")
+		stmt, err := db.Prepare("UPDATE users SET nama=?, umur=?, alamat=?, email=? where user_id=?")
 		checkErr(err)
 
-		res, err := stmt.Exec(nama, umur, alamat, email, "admin")
+		res, err := stmt.Exec(nama, umur, alamat, email, id)
 		checkErr(err)
 
 		affect, err := res.RowsAffected()
